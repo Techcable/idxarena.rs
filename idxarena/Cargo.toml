@@ -1,0 +1,51 @@
+[package]
+name = "idxarena"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "An index-based arena allocator and interner"
+readme = "../README.md"
+repository.workspace = true
+license.workspace = true
+keywords = ["integer", "num-traits", "primitive"]
+categories = ["caching", "data-structures", "memory-management", "no-std", "rust-patterns"]
+
+[package.metadata.docs.rs]
+all-features = true
+
+[dependencies]
+# Used for the underlying allocations
+bumpalo = "3"
+equivalent = { version = "1", optional = true }
+# default hasher used for interning
+foldhash = { version = "0.2", optional = true }
+# 0.1.7 - first version to implement IntegerId for primint::NonMax
+intid = { package = "intid-core", version = "0.3.7" }
+# 0.1.6 - first version to properly implement Hash for NonMax
+primint = { version = "0.1.6", features = ["nonmax"] }
+rustversion = "1"
+static_assertions = "1"
+
+# used for string interning
+[dependencies.hashbrown]
+version = "0.17"
+# we don't want to enable `hashbrown/inline-more` feature unless our `inline-more` feature is enabled
+default-features = false
+# we always use the `equivalent` trait for interning.
+features = ["equivalent"]
+# only used for interning
+optional = true
+
+[features]
+default = ["inline-more"]
+# Mark more functionality as #[inline], potentially increasing performance at cost of compile times
+inline-more = ["hashbrown?/inline-more"]
+# Support string interning
+intern = ["dep:equivalent", "dep:foldhash", "dep:hashbrown"]
+# Enable nightly-specific optimizations and features for this crate and its dependencies.
+# Does not enable hashbrown/nightly as that switches the allocator API.
+nightly = ["foldhash?/nightly"]
+
+[lints]
+workspace = true

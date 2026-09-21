@@ -59,9 +59,6 @@ jobs:
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
-      - uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-nextest
       - uses: Swatinem/rust-cache@v2
       - name: Pin MSRV-compatible versions
         if: ${{ contains(matrix.rust, '1.') }}  # ignored for non-pinned versions
@@ -73,13 +70,11 @@ jobs:
           cargo +stable update
       - name: Test
         # NOTE: Running --all-targets actually excludes doc tests. See rust-lang/cargo#6669
+        # For some reason, nextest brings in the optional dependency on hashbrown and causes a failure on MSRV
+        # due to their use of edition = "2024". Regular cargo test doesn't have this issue.
         # The `--all` flag is equivalent to `--workspace`
         run: |
-          cargo nextest run --workspace --verbose --no-default-features --features "${{ matrix.features }}"
-      # nextest doesn't support doctests (https://github.com/nextest-rs/nextest/issues/16)
-      - name: Doctests
-        run: |
-          cargo test --doc --workspace --verbose --no-default-features --features "${{ matrix.features }}"
+          cargo test --workspace --verbose --no-default-features --features "${{ matrix.features }}"
 
   clippy:
     # Only run on PRs if the source branch is on someone else's repo

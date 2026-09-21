@@ -25,6 +25,8 @@ impl<T: ?Sized + Eq + Hash> sealed::SealedInternable for T {}
 ///
 /// This currently matches [`hashbrown::DefaultHasher`],
 /// but this may change in the future.
+///
+/// [`hashbrown::DefaultHasher`]: https://docs.rs/hashbrown/0.17/hashbrown/struct.DefaultHasher.html
 pub type DefaultHasher = foldhash::fast::RandomState;
 
 /// Indicates that a type can be interned from a value `U`.

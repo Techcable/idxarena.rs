@@ -126,6 +126,12 @@ jobs:
         rust:
           - nightly
           - stable
+        features:
+          - "intern"
+          - ""
+        include:
+          - rust: "nightly"
+            features: "intern nightly"
 
     steps:
       - uses: actions/checkout@v7
@@ -135,11 +141,9 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - name: Docs
         # NOTE: Passing --document-private-items is needed to check for doc errors in private items
-        # Due to conflict between binary and library name we need to check gitpatcher-bin separately.
         # See tasks.py for details on this.
-        # We also need to pass --all-features or else we get stale doclinks
         run: |
-          cargo doc --document-private-items --no-deps --workspace --exclude gitpatcher-bin --verbose --all-features
+          cargo doc --document-private-items --no-deps --workspace --verbose --no-default-features --features "${{ matrix.features }}"
 
   docs-rs:
     # Only run on PRs if the source branch is on someone else's repo

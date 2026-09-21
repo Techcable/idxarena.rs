@@ -7,7 +7,7 @@ members = [
 [workspace.package]
 version = "0.1.0"
 authors = ["Techcable <git@techcable.net>"]
-edition = "2021"
+edition = "2024"
 # 1.64 - workspace.package
 # 1.68 - sparse index
 # 1.71 - syn@3, const ptr::read
@@ -15,7 +15,7 @@ edition = "2021"
 # 1.85 - Rust 2024, hashbrown@0.17
 #
 # if changed, keep in sync with CI
-rust-version = "1.71.1"
+rust-version = "1.85"
 repository = "https://github.com/Techcable/idxarena.rs"
 license = "MIT OR Apache-2.0"
 

@@ -28,11 +28,10 @@ jobs:
           # Minimum Supported Rust Version
           #
           # This is hardcoded and needs to be in sync with Cargo.toml and the README
-          - 1.71.1
+          - 1.85.1
 
           # Intermediate Releases (between MSRV and latest stable)
           # Be careful not to add these needlessly; they hold up CI
-          - 1.85 # first version that hashbrown supporsts and we can actually use 'intern' feature on
 
           # The most recent version of stable rust (automatically updated)
           - stable
@@ -43,11 +42,6 @@ jobs:
           - "intern"
           - "intern inline-more"
           - "inline-more"
-        exclude:
-          - rust: 1.71.1
-            features: "intern"
-          - rust: 1.71.1
-            features: "intern inline-more"
         include:
           - rust: nightly
             features: "nightly inline-more"
